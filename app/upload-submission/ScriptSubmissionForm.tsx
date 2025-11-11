@@ -52,9 +52,20 @@ export default function ScriptSubmissionForm() {
     file: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const [userData, setUserData] = useState<{ fullName?: string; email?: string } | null>(null);
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const raw = localStorage.getItem("userData");
+        setUserData(raw ? JSON.parse(raw) : null);
+      }
+    } catch (e) {
+      setUserData(null);
+    }
+  }, []);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -326,7 +337,7 @@ export default function ScriptSubmissionForm() {
             <Input
               type="text"
               placeholder="Your Name"
-              value={userData.fullName || ""}
+              value={userData?.fullName ?? ""}
               className="w-full h-12 bg-transparent border border-gray-600 text-white placeholder:text-gray-500 rounded-lg px-4"
               disabled={true}
             />
@@ -338,7 +349,7 @@ export default function ScriptSubmissionForm() {
             <Input
               type="email"
               placeholder="Jhon@gmial.com"
-              value={userData.email || ""}
+              value={userData?.email ?? ""}
               className="w-full h-12 bg-transparent border border-gray-600 text-white placeholder:text-gray-500 rounded-lg px-4"
               disabled={true}
             />
