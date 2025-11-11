@@ -331,8 +331,8 @@ export default function SubmitPage() {
 
         {/* Action Buttons */}
         <div className="flex flex-col items-center pt-8 px-4 max-w-4xl mx-auto">
-          <h2 className="text-white text-xl md:text-2xl font-bold tracking-wide text-center mb-6">
-            CLICK HERE TO ENTER CUT TO BLACK PRIZE
+          <h2 className="text-white text-xl font-bold tracking-wide text-center mb-6">
+            CLICK HERE FOR REQUEST INVITE CODE OR LOST INVITATION CODE
           </h2>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-2xl">
@@ -355,8 +355,8 @@ export default function SubmitPage() {
         {/* Footer Text */}
         <div className="text-center pt-4">
           <p className="text-gray-400 text-sm max-w-2xl mx-auto">
-            payment screen (if applicable) appears After code verification
-            upload instructions will be sent after payment is verified.
+            After code verification, payment screen (if applicable) appears.
+            Upload instructions will be sent after payment is verified.
           </p>
         </div>
       </div>

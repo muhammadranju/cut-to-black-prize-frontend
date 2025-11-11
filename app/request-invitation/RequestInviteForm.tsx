@@ -100,8 +100,9 @@ export default function RequestInviteForm() {
             interested: "",
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         setIsLoading(false);
+        toast.error(error.response.data.message);
         console.log(error);
       }
     }
