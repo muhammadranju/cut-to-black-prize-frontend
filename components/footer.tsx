@@ -1,22 +1,42 @@
 "use client";
 
+import { Facebook, Linkedin, Twitter } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
+  const [isDashboardRoute, setIsDashboardRoute] = useState(false);
+
+  const pathname = usePathname(); // Get current route
+
+  useEffect(() => {
+    if (pathname.startsWith("/dashboard")) {
+      setIsDashboardRoute(true);
+    } else {
+      setIsDashboardRoute(false);
+    }
+  }, [pathname]);
+
   return (
-    <footer className="w-full bg-card border-t border-yellow-500 py-16 px-6">
+    <footer
+      className={`w-full bg-card border-t border-yellow-500 py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 ${
+        isDashboardRoute ? "hidden" : ""
+      }`}
+    >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
           {/* Portfolio */}
-          <div>
-            <h3 className="text-yellow-500 font-bold text-lg mb-6">
+          <div className="text-center sm:text-left">
+            <h3 className="text-yellow-500 font-bold text-base sm:text-lg mb-4 sm:mb-6">
               PORTFOLIO
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm"
+                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   Films
                 </a>
@@ -24,7 +44,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm"
+                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   First Submission
                 </a>
@@ -32,7 +52,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm"
+                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   Commercials
                 </a>
@@ -40,7 +60,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm"
+                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   Branded Documentaries
                 </a>
@@ -49,32 +69,34 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
-            <h3 className="text-yellow-500 font-bold text-lg mb-6">CONTACT</h3>
-            <ul className="space-y-3 text-sm text-gray-400">
+          <div className="text-center sm:text-left">
+            <h3 className="text-yellow-500 font-bold text-base sm:text-lg mb-4 sm:mb-6">
+              CONTACT
+            </h3>
+            <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
               <li>
-                <span className="font-semibold">Cut to Black</span>
-                <p>2900 S. Lamar Boulevard Suite 107</p>
+                <span className="font-semibold block">Cut to Black</span>
+                <p className="mt-1">2900 S. Lamar Boulevard Suite 107</p>
               </li>
               <li>
                 <p>Austin, Texas 78704</p>
               </li>
               <li>
-                <p>texasfilmfest.com</p>
+                <p className="break-words">texasfilmfest.com</p>
               </li>
             </ul>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h3 className="text-yellow-500 font-bold text-lg mb-6">
+          <div className="text-center sm:text-left">
+            <h3 className="text-yellow-500 font-bold text-base sm:text-lg mb-4 sm:mb-6">
               QUICK LINK
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/contest-rules"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm"
+                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   Contest Rules
                 </Link>
@@ -82,7 +104,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms-conditions"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm"
+                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   Terms & Conditions
                 </Link>
@@ -90,17 +112,84 @@ export default function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm"
+                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   About
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="flex items-center justify-center gap-6">
-            <img src="./imdb.png" alt="" />
-            <img src="./linkdin.png" alt="" />
-            <img src="./facebook.png" alt="" />
+
+          {/* Social Media Icons */}
+          <div className="flex items-center justify-center sm:justify-start lg:justify-center gap-4 sm:gap-6 col-span-1 sm:col-span-2 lg:col-span-1">
+            {/* <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+              <Image
+                width={80}
+                height={80}
+                src="./imdb.png"
+                alt="IMDB"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+              />
+              <Image
+                width={80}
+                height={80}
+                src="./linkdin.png"
+                alt="LinkedIn"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+              />
+              <Image
+                width={80}
+                height={80}
+                src="./facebook.png"
+                alt="Facebook"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+              />
+            </div> */}
+
+            <div className="grid grid-cols-3 gap-4 sm:gap-6">
+              <a
+                href="https://twitter.com/cuttoblack"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-gray-400 hover:text-yellow-500 transition text-sm"
+              >
+                <Image
+                  width={80}
+                  height={80}
+                  src="./imdb.png"
+                  alt="IMDB"
+                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+                />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/cuttoblack/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-gray-400 hover:text-yellow-500 transition text-sm"
+              >
+                <Image
+                  width={80}
+                  height={80}
+                  src="./linkdin.png"
+                  alt="LinkedIn"
+                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+                />
+              </a>
+              <a
+                href="https://www.facebook.com/cuttoblack"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-gray-400 hover:text-yellow-500 transition text-sm"
+              >
+                <Image
+                  width={80}
+                  height={80}
+                  src="./facebook.png"
+                  alt="Facebook"
+                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+                />
+              </a>
+            </div>
           </div>
         </div>
       </div>
