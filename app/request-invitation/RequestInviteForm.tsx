@@ -1,16 +1,17 @@
 "use client";
 import ContentWrapper from "@/components/content-wrapper";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { API_URL } from "@/lib/config";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
-import Cookies from "js-cookie";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 export default function RequestInviteForm() {
   const [formData, setFormData] = useState({
@@ -19,12 +20,14 @@ export default function RequestInviteForm() {
     brief: "",
     interested: "",
   });
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({
     fullName: "",
     email: "",
     brief: "",
     interested: "",
+    terms: "",
   });
 
   const router = useRouter();
@@ -32,6 +35,17 @@ export default function RequestInviteForm() {
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  };
+
+  const isFormValid = () => {
+    return (
+      formData.fullName.trim() &&
+      formData.email.trim() &&
+      validateEmail(formData.email) &&
+      formData.brief.trim() &&
+      formData.interested.trim() &&
+      termsAgreed
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,6 +57,7 @@ export default function RequestInviteForm() {
       email: "",
       brief: "",
       interested: "",
+      terms: "",
     };
 
     // Validate Full Name
@@ -65,6 +80,11 @@ export default function RequestInviteForm() {
     // Validate Why Interested
     if (!formData.interested.trim()) {
       newErrors.interested = "Please enter why you are interested";
+    }
+
+    // Validate Terms
+    if (!termsAgreed) {
+      newErrors.terms = "You must agree to the Terms and Conditions";
     }
 
     setErrors(newErrors);
@@ -100,6 +120,7 @@ export default function RequestInviteForm() {
             brief: "",
             interested: "",
           });
+          setTermsAgreed(false);
         }
       } catch (error: any) {
         setIsLoading(false);
@@ -120,6 +141,18 @@ export default function RequestInviteForm() {
       setErrors((prev) => ({
         ...prev,
         [field]: "",
+      }));
+    }
+  };
+
+  const handleTermsChange = (checked: boolean) => {
+    setTermsAgreed(checked);
+
+    // Clear error when checked
+    if (checked && errors.terms) {
+      setErrors((prev) => ({
+        ...prev,
+        terms: "",
       }));
     }
   };
@@ -221,12 +254,12 @@ export default function RequestInviteForm() {
             {/* Terms Checkbox */}
             <div className="flex items-center justify-between gap-2 -mt-3  ">
               <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
+                <Checkbox
                   id="terms"
-                  className="border-gray-600 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                  checked={termsAgreed}
+                  onCheckedChange={handleTermsChange}
                 />
-                <label
+                <Label
                   htmlFor="terms"
                   className="text-white text-sm cursor-pointer "
                 >
@@ -238,21 +271,24 @@ export default function RequestInviteForm() {
                     Terms and Conditions
                   </Link>{" "}
                   by requesting invite.
-                </label>
+                </Label>
               </div>
               <Link href="/submit" className="flex items-center gap-2 text-xs">
                 <ArrowLeft className=" w-4 h-4 -mr-2" /> You already have an
                 invite code?
               </Link>
             </div>
+            {errors.terms && (
+              <p className="text-red-500 text-sm mt-1">{errors.terms}</p>
+            )}
           </div>
 
           {/* Submit Button */}
           <div className="flex flex-col items-center justify-center pt-2 space-y-3">
             <Button
               type="submit"
-              className="max-w-sm w-full h-12 font-bold text-black"
-              disabled={isLoading}
+              className="max-w-sm w-full h-12 font-bold text-black disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading || !isFormValid()}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">

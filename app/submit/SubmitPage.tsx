@@ -3,14 +3,15 @@ import ContentWrapper from "@/components/content-wrapper";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { API_URL } from "@/lib/config";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import Cookies from "js-cookie";
-import { Loader2 } from "lucide-react";
 
 export default function SubmitPage() {
   const [invitationCode, setInvitationCode] = useState("");
@@ -23,6 +24,10 @@ export default function SubmitPage() {
   const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false); // Add this state at component level
+
+  const isFormValid = () => {
+    return invitationCode.trim() && agreedToTerms;
+  };
 
   const handleSubmit = async () => {
     if (isSubmitting) return; // Prevent multiple submits
@@ -80,6 +85,8 @@ export default function SubmitPage() {
         );
         // Set cookies for the invitation code
         setIsLoading(false);
+        setInvitationCode("");
+        setAgreedToTerms(false);
         router.push("/upload-submission");
       } else {
         // Handle non-success responses (e.g., custom error in data)
@@ -92,7 +99,10 @@ export default function SubmitPage() {
 
       if (error.response?.status === 404) {
         toast.error("Invitation code not found. Please try again.");
-        setIsLoading(false);
+        setErrors((prev) => ({
+          ...prev,
+          invitationCode: "Invitation code not found",
+        }));
       } else if (
         error.response?.status === 400 ||
         error.response?.status === 422
@@ -100,13 +110,23 @@ export default function SubmitPage() {
         toast.error(
           error.response.data.message || "Invalid invitation code format"
         );
-        setIsLoading(false);
+        setErrors((prev) => ({
+          ...prev,
+          invitationCode:
+            error.response.data.message || "Invalid invitation code format",
+        }));
       } else if (error.response?.status >= 500) {
         toast.error("Server error. Please try again later");
-        setIsLoading(false);
+        setErrors((prev) => ({
+          ...prev,
+          invitationCode: "Server error. Please try again later",
+        }));
       } else {
         toast.error("Network error. Check your connection and try again");
-        setIsLoading(false);
+        setErrors((prev) => ({
+          ...prev,
+          invitationCode: "Network error. Check your connection and try again",
+        }));
       }
     } finally {
       setIsSubmitting(false); // Stop loading
@@ -127,7 +147,7 @@ export default function SubmitPage() {
   const handleTermsChange = (checked: boolean) => {
     setAgreedToTerms(checked);
     // Clear error when user checks the box
-    if (errors.terms) {
+    if (checked && errors.terms) {
       setErrors((prev) => ({
         ...prev,
         terms: "",
@@ -251,12 +271,9 @@ export default function SubmitPage() {
               <Checkbox
                 id="terms"
                 checked={agreedToTerms}
-                onCheckedChange={(checked) =>
-                  handleTermsChange(checked as boolean)
-                }
-                className="border-gray-600 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                onCheckedChange={handleTermsChange}
               />
-              <label
+              <Label
                 htmlFor="terms"
                 className="text-white text-sm cursor-pointer "
               >
@@ -267,8 +284,8 @@ export default function SubmitPage() {
                 >
                   Terms and Conditions
                 </Link>{" "}
-                by requesting invite.
-              </label>
+                by submitting invite code.
+              </Label>
             </div>
             {errors.terms && (
               <p className="text-red-500 text-sm mt-1">{errors.terms}</p>
@@ -279,8 +296,8 @@ export default function SubmitPage() {
           <div className="flex justify-center pt-6">
             <Button
               onClick={handleSubmit}
-              className="max-w-sm w-full h-12 font-bold text-black"
-              disabled={isLoading}
+              className="max-w-sm w-full h-12 font-bold text-black disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading || !isFormValid()}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">

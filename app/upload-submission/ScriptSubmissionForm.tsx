@@ -1,8 +1,10 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import ContentWrapper from "@/components/content-wrapper";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -10,16 +12,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Loader2, Upload } from "lucide-react";
-import ContentWrapper from "@/components/content-wrapper";
-import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2, Upload } from "lucide-react";
 import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
 
+import { API_URL } from "@/lib/config";
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import axios from "axios";
-import { API_URL } from "@/lib/config";
 interface FormData {
   scriptTitle: string;
   logline: string;
@@ -34,6 +36,7 @@ interface FormErrors {
   genre: string;
   scriptLength: string;
   file: string;
+  terms: string;
 }
 
 export default function ScriptSubmissionForm() {
@@ -44,12 +47,14 @@ export default function ScriptSubmissionForm() {
     scriptLength: "",
     file: null,
   });
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({
     scriptTitle: "",
     logline: "",
     genre: "",
     scriptLength: "",
     file: "",
+    terms: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<{
@@ -122,6 +127,17 @@ export default function ScriptSubmissionForm() {
     }
   };
 
+  const handleTermsChange = (checked: boolean) => {
+    setTermsAgreed(checked);
+    // Clear error when checked
+    if (checked && errors.terms) {
+      setErrors((prev) => ({
+        ...prev,
+        terms: "",
+      }));
+    }
+  };
+
   const handleSubmit = async () => {
     // Reset errors
     const newErrors: FormErrors = {
@@ -130,6 +146,7 @@ export default function ScriptSubmissionForm() {
       genre: "",
       scriptLength: "",
       file: "",
+      terms: "",
     };
 
     // Validate Script Title
@@ -160,6 +177,11 @@ export default function ScriptSubmissionForm() {
     } else if (formData.file.size > 5 * 1024 * 1024) {
       // 5MB limit example
       newErrors.file = "File size must be less than 5MB";
+    }
+
+    // Validate Terms
+    if (!termsAgreed) {
+      newErrors.terms = "You must agree to the Terms and Conditions";
     }
 
     setErrors(newErrors);
@@ -201,6 +223,7 @@ export default function ScriptSubmissionForm() {
             scriptLength: "",
             file: null,
           });
+          setTermsAgreed(false);
         }
       } catch (error: any) {
         setIsLoading(false);
@@ -441,29 +464,33 @@ export default function ScriptSubmissionForm() {
             {errors.file && (
               <p className="text-red-500 text-sm mt-1">{errors.file}</p>
             )}
-            {/* Terms Checkbox */}
-            <div className="flex items-center justify-between gap-2 mt-3  ">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  className="border-gray-600 data-[state=checked]:bg-white data-[state=checked]:text-black"
-                />
-                <label
-                  htmlFor="terms"
-                  className="text-white text-sm cursor-pointer "
+          </div>
+
+          {/* Terms Checkbox */}
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="terms"
+                checked={termsAgreed}
+                onCheckedChange={handleTermsChange}
+              />
+              <Label
+                htmlFor="terms"
+                className="text-white text-sm cursor-pointer "
+              >
+                I agree to{" "}
+                <Link
+                  href="/terms-conditions"
+                  className=" underline underline-offset-2 text-blue-500"
                 >
-                  I agree to{" "}
-                  <Link
-                    href="/terms-conditions"
-                    className=" underline underline-offset-2 text-blue-500"
-                  >
-                    Terms and Conditions
-                  </Link>{" "}
-                  by requesting invite.
-                </label>
-              </div>
+                  Terms and Conditions
+                </Link>{" "}
+                by submitting screenplay.
+              </Label>
             </div>
+            {errors.terms && (
+              <p className="text-red-500 text-sm mt-1">{errors.terms}</p>
+            )}
           </div>
 
           <small className="text-neutral-400 text-sm my-2 w-1/2 mx-auto">
@@ -489,15 +516,6 @@ export default function ScriptSubmissionForm() {
                 "SUBMIT SCREENPLAY"
               )}
             </Button>
-            {/* <p className="text-gray-400 text-sm mt-1">
-              By submitting, you agree to our{" "}
-              <Link
-                href="/terms-conditions"
-                className="text-yellow-500 hover:text-yellow-400 underline font-medium"
-              >
-                Terms and Conditions
-              </Link>
-            </p> */}
           </div>
           <p>
             Please verify your entries before submitting. Submit only one invite

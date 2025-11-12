@@ -1,6 +1,5 @@
 "use client";
 
-import { Facebook, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,82 +20,56 @@ export default function Footer() {
 
   return (
     <footer
-      className={`w-full bg-card border-t border-yellow-500 py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 ${
+      className={`w-full bg-card border-t border-yellow-500 py-5 pt-10 px-4 sm:px-6 lg:px-8 ${
         isDashboardRoute ? "hidden" : ""
       }`}
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
           {/* Portfolio */}
-          <div className="text-center sm:text-left">
-            <h3 className="text-yellow-500 font-bold text-base sm:text-lg mb-4 sm:mb-6">
-              PORTFOLIO
+          <div className="text-left">
+            <h3 className="text-yellow-500 font-bold text-sm sm:text-lg mb-4 sm:mb-6">
+              Address
             </h3>
-            <ul className="space-y-2 sm:space-y-3">
+
+            <ul className="space-y-2 sm:space-y-3 text-sm text-neutral-400">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
-                >
-                  Films
-                </a>
+                <p className="mt-1">Call Sheet Media</p>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
-                >
-                  First Submission
-                </a>
+                <p> 1800 Vine Street</p>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
-                >
-                  Commercials
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
-                >
-                  Branded Documentaries
-                </a>
-              </li>
+              <li>Hollywood, California 90028</li>
+              <li>United States of America</li>
             </ul>
           </div>
 
           {/* Contact */}
-          <div className="text-center sm:text-left">
+          <div className="ltext-left">
             <h3 className="text-yellow-500 font-bold text-base sm:text-lg mb-4 sm:mb-6">
-              CONTACT
+              Contact
             </h3>
-            <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
+            <ul className="space-y-2 sm:space-y-3 text-sm text-neutral-400">
               <li>
-                <span className="font-semibold block">Cut to Black</span>
-                <p className="mt-1">2900 S. Lamar Boulevard Suite 107</p>
+                <p className="mt-1">New York, NY</p>
               </li>
               <li>
-                <p>Austin, Texas 78704</p>
+                <p>Central Park Studios</p>
               </li>
-              <li>
-                <p className="break-words">texasfilmfest.com</p>
-              </li>
+              <li>contest@cuttoblackprize.com</li>
             </ul>
           </div>
 
           {/* Quick Links */}
-          <div className="text-center sm:text-left">
+          <div className="text-left">
             <h3 className="text-yellow-500 font-bold text-base sm:text-lg mb-4 sm:mb-6">
-              QUICK LINK
+              Quick Links
             </h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/contest-rules"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
+                  className="text-neutral-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   Contest Rules
                 </Link>
@@ -104,7 +77,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms-conditions"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
+                  className="text-neutral-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
                   Terms and Conditions
                 </Link>
@@ -112,62 +85,38 @@ export default function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-gray-400 hover:text-yellow-500 transition text-sm inline-block"
+                  className="text-neutral-400 hover:text-yellow-500 transition text-sm inline-block"
                 >
-                  Privacy
+                  Privacy and Policy
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Social Media Icons */}
-          <div className="flex items-center justify-center sm:justify-start lg:justify-center gap-4 sm:gap-6 col-span-1 sm:col-span-2 lg:col-span-1">
-            <div className="grid grid-cols-3 gap-4 sm:gap-6">
-              <a
-                href="https://twitter.com/cuttoblack"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 text-gray-400 hover:text-yellow-500 transition text-sm"
-              >
-                <Image
-                  width={80}
-                  height={80}
-                  src="./imdb.png"
-                  alt="IMDB"
-                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
-                />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/cuttoblack/"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 text-gray-400 hover:text-yellow-500 transition text-sm"
-              >
-                <Image
-                  width={80}
-                  height={80}
-                  src="./linkdin.png"
-                  alt="LinkedIn"
-                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
-                />
-              </a>
-              <a
-                href="https://www.facebook.com/cuttoblack"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 text-gray-400 hover:text-yellow-500 transition text-sm"
-              >
-                <Image
-                  width={80}
-                  height={80}
-                  src="./facebook.png"
-                  alt="Facebook"
-                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
-                />
-              </a>
-            </div>
+          <div className="">
+            {/* <h3 className="font-bold  text-3xl ">Cut to Black Prize</h3> */}
+            <p className="text-yellow-500 font-bold text-base mb-3">
+              Sponsored by{" "}
+              <span className="text-white font-black text-xl">
+                Call Sheet Media
+              </span>
+            </p>
+            <Image
+              width={400}
+              height={500}
+              src="https://cuttoblackprize.com/assets/images/1800Vine.jpg"
+              alt="1800 Vine Street"
+              className="lg:w-96 mb-3  object-contain rounded-lg"
+            />
           </div>
         </div>
+        <div className="border-t border-neutral-500 py-3 "></div>
+        <p className="text-center text-neutral-400 text-sm">
+          © 2023 Cut to Black Prize. All rights reserved.
+          <br />
+          Cut to Black Prize is a trademark of Call Sheet Media LLC.
+        </p>
       </div>
     </footer>
   );

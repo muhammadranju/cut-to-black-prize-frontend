@@ -1,10 +1,10 @@
 import Footer from "@/components/footer";
 import Navigation from "@/components/navigation";
+import ScrollToTop from "@/components/scroll-to-top";
 import type { Metadata } from "next";
 import type React from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
-import ScrollToTop from "@/components/scroll-to-top";
 
 export const metadata: Metadata = {
   title: "Cut to Black Prize - Screenwriting Competition",

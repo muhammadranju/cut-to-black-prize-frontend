@@ -7,6 +7,7 @@ import React from "react";
 const ThankYou: React.FC = () => {
   return (
     <ContentWrapper>
+      <title>Thank You | Cut to Black Prize</title>
       {/* Success Icon */}
       <div className="flex justify-center mb-8 mt-10">
         <div className="relative">

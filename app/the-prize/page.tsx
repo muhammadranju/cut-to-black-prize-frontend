@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button"; // Assuming shadcn/ui Button is installed
-import { Card } from "@/components/ui/card"; // Assuming shadcn/ui Card is installed
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
 export default function ThePrize() {
   return (
     <>
@@ -16,7 +17,6 @@ export default function ThePrize() {
             }}
           >
             <div className="absolute inset-0 bg-black/20" />{" "}
-            {/* Dark overlay for text readability */}
           </div>
 
           {/* Content Overlay */}
@@ -26,8 +26,8 @@ export default function ThePrize() {
           <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight bg-linear-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">
             One winner
             <br />
-            <span className="text-4xl md:text-7xl">$10,000.</span>
-            Producer meeting.
+            <span className="text-4xl md:text-7xl">$10,000. </span> Producer
+            meeting.
           </h1>
 
           {/* Description Paragraphs */}
@@ -51,9 +51,11 @@ export default function ThePrize() {
 
           {/* CTA Button */}
           <div className="flex justify-center">
-            <Button size="lg" className="py-6">
-              REQUEST AN INVITATION
-            </Button>
+            <Link href="/request-invitation">
+              <Button size="lg" className="py-6 font-bold ">
+                REQUEST AN INVITATION
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

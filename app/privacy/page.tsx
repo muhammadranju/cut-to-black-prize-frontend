@@ -3,6 +3,7 @@ import ContentWrapper from "@/components/content-wrapper";
 const page = () => {
   return (
     <ContentWrapper>
+      <title>Privacy Policy | Cut to Black Prize</title>
       <div className="text-neutral-100 text-lg">
         <br />
         <br />

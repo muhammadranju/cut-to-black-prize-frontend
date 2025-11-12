@@ -1,71 +1,72 @@
 "use client";
 import ContentWrapper from "@/components/content-wrapper";
 import { Award, User } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 const winners: Winner[] = [
   {
     id: 1,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Ms. Nadia Rahman",
+    price: "$10,000",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=400&h=400&fit=crop",
   },
   {
     id: 2,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Ms. Nabila Rahman",
+    price: "$10,000",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
   },
   {
     id: 3,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Mr. Saiful Alam",
+    price: "$10,000",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
   },
   {
     id: 4,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Dr. Tanvir Ahmed",
+    price: "$10,000",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop",
   },
   {
     id: 5,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Mrs. Farzana Karim",
+    price: "$10,000",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop",
   },
   {
     id: 6,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Mr. Rezaul Islam",
+    price: "$10,000",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
   },
   {
     id: 7,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Mr. Mohammad Rahman",
+    price: "$10,000",
     image:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
   },
   {
     id: 8,
-    name: "Mr. Johan Islam",
-    year: "2005",
+    name: "Mr. Mahfuz Rahman",
+    price: "$10,000",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop",
   },
 ];
 
 interface Winner {
   id: number;
   name: string;
-  year: string;
+  price: string;
   image: string;
 }
 
@@ -94,7 +95,9 @@ const WinnersSpotlight: React.FC = () => {
           >
             {/* Image Container */}
             <div className="aspect-square overflow-hidden">
-              <img
+              <Image
+                width={400}
+                height={400}
                 src={winner.image}
                 alt={winner.name}
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
@@ -114,13 +117,13 @@ const WinnersSpotlight: React.FC = () => {
                 </span>
               </div>
 
-              {/* Winner Year */}
+              {/* Winner Price */}
               <div className="flex items-center gap-2">
                 <div className="shrink-0 w-5 h-5 bg-gray-500 rounded-full flex items-center justify-center">
                   <Award className="w-3 h-3 text-white" />
                 </div>
                 <span className="text-xs sm:text-sm font-medium whitespace-nowrap">
-                  Winner : {winner.year}
+                  Winning : {winner.price}
                 </span>
               </div>
             </div>

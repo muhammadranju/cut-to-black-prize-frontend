@@ -1,6 +1,7 @@
 "use client";
 import ContentWrapper from "@/components/content-wrapper";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { API_URL } from "@/lib/config";
 import axios from "axios";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -21,7 +23,11 @@ import { toast } from "sonner";
 
 export default function InvitationCodePage() {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [errors, setErrors] = useState({
+    email: "",
+    terms: "",
+  });
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // Add this state
   const [isLoading, setIsLoading] = useState(false);
@@ -32,80 +38,126 @@ export default function InvitationCodePage() {
     return emailRegex.test(email);
   };
 
+  const isFormValid = () => {
+    return email.trim() && validateEmail(email) && termsAgreed;
+  };
+
   const handleSubmit = async () => {
     if (isSubmitting) return;
 
-    setError("");
-    setIsSubmitting(true);
+    // Reset errors
+    const newErrors = {
+      email: "",
+      terms: "",
+    };
 
     // Validate email is not empty
     if (!email.trim()) {
-      setError("Please enter your email address");
-      setIsSubmitting(false);
-      return;
+      newErrors.email = "Please enter your email address";
+    } else if (!validateEmail(email)) {
+      newErrors.email = "Please enter a valid email address";
     }
 
-    // Validate email format (assuming validateEmail is defined, e.g., regex)
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address");
-      setIsSubmitting(false);
-      return;
+    // Validate Terms
+    if (!termsAgreed) {
+      newErrors.terms = "You must agree to the Terms and Conditions";
     }
 
-    try {
-      setIsLoading(true);
-      const response = await axios.post(
-        `${API_URL}/invitation/forget-invite-code`,
-        { email: email.trim() }, // Trim here too
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // Add auth if needed: Authorization: `Bearer ${token}`,
-          },
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    const hasErrors = Object.values(newErrors).some((error) => error !== "");
+
+    if (!hasErrors) {
+      setIsSubmitting(true);
+
+      try {
+        setIsLoading(true);
+        const response = await axios.post(
+          `${API_URL}/invitation/forget-invite-code`,
+          { email: email.trim() }, // Trim here too
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Add auth if needed: Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = response.data; // Axios wraps in response.data
+
+        if (data.success) {
+          setIsLoading(false);
+          toast.success(`Recovery code sent to ${email}`);
+          setOpen(true);
+          setEmail(""); // Clear only on success
+          setTermsAgreed(false);
+          setTimeout(() => {
+            router.push("/submit");
+          }, 2500); // Delay to show success message
+        } else if (data.status === 404 || data.error?.includes("not found")) {
+          setIsLoading(false);
+          setErrors((prev) => ({ ...prev, email: "Email not found" }));
+        } else if (data.message === "Email not registered" || data.error) {
+          setIsLoading(false);
+          setErrors((prev) => ({
+            ...prev,
+            email: data.message || data.error || "Something went wrong",
+          }));
+        } else {
+          setIsLoading(false);
+          setErrors((prev) => ({
+            ...prev,
+            email: "Unexpected response from server",
+          }));
         }
-      );
-
-      const data = response.data; // Axios wraps in response.data
-
-      if (data.success) {
+      } catch (error: any) {
         setIsLoading(false);
-        toast.success(`Recovery code sent to ${email}`);
-        setOpen(true);
-        setEmail(""); // Clear only on success
-        setTimeout(() => {
-          router.push("/submit");
-        }, 2500); // Delay to show success message
-      } else if (data.status === 404 || data.error?.includes("not found")) {
-        setIsLoading(false);
-        setError("Email not found");
-      } else if (data.message === "Email not registered" || data.error) {
-        setIsLoading(false);
-        setError(data.message || data.error || "Something went wrong");
-      } else {
-        setIsLoading(false);
-        setError("Unexpected response from server");
+        console.error("API Error:", error); // Debug: Full error
+        if (error.response?.status === 404) {
+          toast.error("Email not found");
+          setErrors((prev) => ({ ...prev, email: "Email not found" }));
+        } else if (error.response?.status === 400) {
+          setErrors((prev) => ({
+            ...prev,
+            email: error.response.data.message || "Invalid email format",
+          }));
+        } else if (error.response?.status >= 500) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "Server error. Please try again later",
+          }));
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            email: "Network error. Check your connection",
+          }));
+        }
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (error: any) {
-      setIsLoading(false);
-      console.error("API Error:", error); // Debug: Full error
-      if (error.response?.status === 404) {
-        toast.error("Email not found");
-      } else if (error.response?.status === 400) {
-        setError(error.response.data.message || "Invalid email format");
-      } else if (error.response?.status >= 500) {
-        setError("Server error. Please try again later");
-      } else {
-        setError("Network error. Check your connection");
-      }
-    } finally {
-      setIsSubmitting(false);
     }
   };
+
   const handleEmailChange = (value: string) => {
     setEmail(value);
-    // Clear error when user starts typing
-    if (error) {
-      setError("");
+    // Clear email error when user starts typing
+    if (errors.email) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "",
+      }));
+    }
+  };
+
+  const handleTermsChange = (checked: boolean) => {
+    setTermsAgreed(checked);
+    // Clear terms error when checked
+    if (checked && errors.terms) {
+      setErrors((prev) => ({
+        ...prev,
+        terms: "",
+      }));
     }
   };
 
@@ -132,22 +184,18 @@ export default function InvitationCodePage() {
               onChange={(e) => handleEmailChange(e.target.value)}
               className="w-full h-12 bg-transparent border border-gray-600 text-white placeholder:text-gray-500 rounded-lg px-4"
             />
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-            {/* <div className="flex items-center justify-end gap-2 -mt-3  hover:text-yellow-500">
-              <Link href="/submit" className="flex items-center gap-2 text-xs">
-                <ArrowLeft className=" w-4 h-4 -mr-2" /> Back to the form to
-                submit your screenplay
-              </Link>
-            </div> */}
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
             {/* Terms Checkbox */}
             <div className="flex items-center justify-between gap-2 -mt-3  ">
               <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
+                <Checkbox
                   id="terms"
-                  className="border-gray-600 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                  checked={termsAgreed}
+                  onCheckedChange={handleTermsChange}
                 />
-                <label
+                <Label
                   htmlFor="terms"
                   className="text-white text-sm cursor-pointer "
                 >
@@ -158,22 +206,25 @@ export default function InvitationCodePage() {
                   >
                     Terms and Conditions
                   </Link>{" "}
-                  by requesting invite.
-                </label>
+                  by requesting recovery code.
+                </Label>
               </div>
               <Link href="/submit" className="flex items-center gap-2 text-xs">
                 <ArrowLeft className=" w-4 h-4 -mr-2" /> You already have an
                 invite code?
               </Link>
             </div>
+            {errors.terms && (
+              <p className="text-red-500 text-sm mt-1">{errors.terms}</p>
+            )}
           </div>
 
           {/* Submit Button */}
           <div className="flex justify-center pt-6">
             <Button
               onClick={handleSubmit}
-              className="max-w-sm w-full h-12 font-bold text-black"
-              disabled={isLoading}
+              className="max-w-sm w-full h-12 font-bold text-black disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading || !isFormValid()}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">

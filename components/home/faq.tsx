@@ -8,19 +8,24 @@ export default function FAQ() {
 
   const faqs = [
     {
-      question: "What kind of short films can I watch here?",
+      question: "How can I participate in the Cut to Black Prize contest?",
       answer:
-        "Our platform showcases independent and emerging filmmakers – featuring a variety of genres like drama, thriller, and social stories.",
+        "Participation is by invitation only. You must first request and receive an official invitation before submitting your screenplay entry. Once invited, you can submit one original, unproduced script in PDF format during the open submission period.",
     },
     {
-      question: "Do I need a subscription to watch the films?",
+      question: "What is the grand prize for the winner?",
       answer:
-        "Some content is free, while certain premium films may require a subscription or one-time payment.",
+        "The grand prize winner will receive a cash award of 10,000 USD, paid within 30 days after verification. In addition, the winner will be awarded a Hollywood trip package that includes round-trip economy airfare to Los Angeles, two or three nights of standard hotel accommodation, and a face-to-face meeting with a producer or development executive. The total prize value can reach up to 12,500 USD. If travel is not possible, the sponsor may offer a 1,500 USD cash alternative or an equivalent virtual meeting package.",
     },
     {
-      question: "Can I submit my own film?",
+      question: "When is the entry period and how much is the entry fee?",
       answer:
-        'Yes! We encourage new creators. You can upload your film through the "Submit Film" section by filling out the form.',
+        "The entry period for the contest runs from November 15, 2025, through June 30, 2026, with multiple phases: pre-registration, early, regular, late, and extended. Entry fees range from 100 to 150 USD depending on the phase of submission. All fees are nonrefundable, and the submission process will close once the participant quota is reached.",
+    },
+    {
+      question: "How are scripts judged and when will winners be announced?",
+      answer:
+        "Scripts are evaluated through blind judging by experienced producers, screenwriters, and development executives. The judging process focuses on storytelling, originality, character development, structure, pacing, dialogue, and market potential. Quarterfinalists will be announced on July 10, 2026, followed by semifinalists on July 20, finalists on August 3, and the grand prize winner on August 14, 2026. All judges’ decisions are final.",
     },
   ];
 
