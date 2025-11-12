@@ -1,6 +1,12 @@
 "use client";
 
 import { User } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
 
 export default function Testimonials() {
   const testimonials = [
@@ -37,45 +43,68 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="w-full py-10 px-6">
+    <section className="w-full py-16 px-6 ">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-white mb-8">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-12">
           Testimonials
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Swiper
+          modules={[Autoplay, Pagination]}
+          spaceBetween={24}
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+          loop={true}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+            renderBullet: function (index: number, className: string) {
+              return (
+                '<span class="' +
+                className +
+                ' bg-yellow-500 w-2 h-2 rounded-full opacity-50 transition-opacity"></span>'
+              );
+            },
+          }}
+          className="max-w-7xl"
+        >
           {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="bg-card border border-yellow-100/80 rounded-lg p-6 transition-colors hover:border-white hover:bg-white/10"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
-                  <span>
-                    <User />
-                  </span>
+            <SwiperSlide key={index}>
+              <div className="bg-neutral-800/50 backdrop-blur-sm border border-yellow-500/20 rounded-xl p-6 h-full transition-all duration-300 hover:bg-neutral-700/50 hover:border-yellow-500/40 hover:shadow-2xl hover:shadow-yellow-500/10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-yellow-500 to-orange-500 flex items-center justify-center shadow-lg">
+                    <User className="w-6 h-6 text-neutral-900" />
+                  </div>
+                  <div>
+                    <p className="text-yellow-400 text-base font-semibold">
+                      {testimonial.name}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-yellow-500 text-sm font-semibold">
-                    {testimonial.name}
-                  </p>
+
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+                    <span key={i} className="text-yellow-400 text-lg">
+                      ★
+                    </span>
+                  ))}
                 </div>
-              </div>
 
-              <div className="flex gap-1 mb-3">
-                {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <span key={i} className="text-yellow-500">
-                    ★
-                  </span>
-                ))}
+                <p className="text-neutral-300 text-base leading-relaxed">
+                  {testimonial.text}
+                </p>
               </div>
-
-              <p className="text-gray-300 text-sm leading-relaxed">
-                {testimonial.text}
-              </p>
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );

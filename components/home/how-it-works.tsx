@@ -1,6 +1,6 @@
 "use client";
 
-import { Clapperboard, PartyPopper, Youtube } from "lucide-react";
+import { Gem, PencilRuler, Rotate3d } from "lucide-react";
 
 export default function HowItWorks() {
   const steps = [
@@ -8,19 +8,19 @@ export default function HowItWorks() {
       title: "Premium",
       description:
         "Cut to Black Prize is a small, curated competition for writers who value craft and real access. One winner receives $10,000, a Hollywood trip, and a producer meeting. If you were invited, you are in the right place to submit.",
-      icon: <Clapperboard />,
+      icon: <Gem />,
     },
     {
       title: "Craft forward",
       description:
         "We read fewer scripts so we can read deeper. Blind judging across all genres, one champion at the end. If you received an invitation, you may enter here: Enter Contest.",
-      icon: <Youtube />,
+      icon: <PencilRuler />,
     },
     {
       title: "Access oriented",
       description:
         "This contest is about outcomes, not volume. One writer will leave with $10,000, a trip to Hollywood, and time with a working producer. If you were invited, claim your spot now.",
-      icon: <PartyPopper />,
+      icon: <Rotate3d />,
     },
   ];
 
