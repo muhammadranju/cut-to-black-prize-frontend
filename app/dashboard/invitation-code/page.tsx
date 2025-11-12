@@ -192,7 +192,7 @@ export default function InvitationCodeTable() {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Search */}
-          <div className="relative">
+          <div className="relative max-w-1/2">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Search by email or code..."

@@ -63,7 +63,7 @@ const AboutPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen py-10 lg:py-20 bg-black text-white">
       {/* Profile Section - Black Background */}
       <ProfileSection
         name="LEE ROTHENFLUE"

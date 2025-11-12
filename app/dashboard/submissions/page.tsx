@@ -86,7 +86,7 @@ export default function SubmissionsTable() {
     open: boolean;
     selectedSubmission: MockSubmission | null;
   }>({ open: false, selectedSubmission: null });
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   const handleStatusChange = async (
     submissionId: string,
@@ -228,10 +228,10 @@ export default function SubmissionsTable() {
     <div className="space-y-6">
       <div>
         <h1 className="text-4xl font-bold text-accent mb-2">
-          Participant Submissions Data
+          Participants Screenplay
         </h1>
         <p className="text-muted">
-          View and manage all submissions made by users.
+          View and manage all screenplay submissions made by users.
         </p>
       </div>
       <Card>
@@ -244,7 +244,7 @@ export default function SubmissionsTable() {
         <CardContent className="space-y-4">
           {/* Search and Export */}
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            <div className="relative flex-1 max-w-md">
+            <div className="relative flex-1 max-w-1/2">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="Search submissions..."
@@ -259,21 +259,37 @@ export default function SubmissionsTable() {
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                onClick={() => handelDownloadCSV()}
+                onClick={() => `${API_URL}/export/csv`}
                 disabled={isLoading}
               >
-                {isLoading ? (
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  </div>
-                ) : (
-                  <Download className="w-4 h-4 mr-2" />
-                )}
-                CSV
+                <a
+                  href={`${API_URL}/export/csv`}
+                  download
+                  className="flex items-center gap-1"
+                >
+                  <Download className="w-3 h-3" />
+                  EXPORT CSV
+                </a>
               </Button>
               <Button
+                variant="outline"
+                onClick={() => `${API_URL}/export/csv`}
+                disabled={isLoading}
+                className="bg-green-500 hover:bg-green-600 text-black"
+              >
+                <a
+                  href={`${API_URL}/export/excel`}
+                  download
+                  className="flex items-center gap-1"
+                >
+                  <Download className="w-3 h-3" />
+                  EXPORT EXCEL
+                </a>
+              </Button>
+
+              {/* <Button
                 className="bg-green-500 hover:bg-green-600"
-                onClick={() => handelDownloadExcel()}
+                onClick={() => `${API_URL}/export/excel`}
                 disabled={isLoading2}
               >
                 {isLoading2 ? (
@@ -284,7 +300,7 @@ export default function SubmissionsTable() {
                   <Download className="w-4 h-4 mr-2" />
                 )}
                 EXCEL
-              </Button>
+              </Button> */}
             </div>
           </div>
 

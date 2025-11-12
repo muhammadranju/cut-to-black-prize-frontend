@@ -32,7 +32,7 @@ export default function Hero() {
         // Fallback: hide loader after 3 seconds even if event doesn't fire
         setTimeout(() => {
           setIsLoading(false);
-        }, 3000);
+        }, 5000);
       }
     };
 
@@ -69,8 +69,8 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative w-full h-screen bg-black bg-cover bg-center flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none" />
+    <div className="relative w-full h-screen bg-cover bg-center flex items-center justify-center overflow-hidden -mb-[550px] lg:mb-0">
+      <div className="absolute inset-0 lg:bg-black/40 z-10 pointer-events-none "></div>
       {/*  */}
       {/* Loading Spinner */}
       {isLoading && (
@@ -79,12 +79,11 @@ export default function Hero() {
             {/* Spinning circle */}
             <div className="w-16 h-16 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
             {/* Optional: Loading text */}
-            <p className="text-white text-sm mt-4 text-center">Loading...</p>
           </div>
         </div>
       )}
 
-      <div className="relative w-full h-full z-0">
+      <div className="relative w-full h-full z-0 lg:mt-0 mt-36 ">
         <div
           style={{
             padding: "56.25% 0 0 0",
@@ -104,7 +103,7 @@ export default function Hero() {
               width: "100%",
               height: "100%",
             }}
-            title="Cut to Black showreel"
+            title="Cut to Black Prize"
           ></iframe>
 
           {/* Clickable overlay */}

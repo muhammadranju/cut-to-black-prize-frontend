@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableCell, TableRow } from "@/components/ui/table";
 
-const SkeletonTableRow = ({ round = 8 }) =>
+const SkeletonTableRow = ({ round = 10 }) =>
   Array.from({ length: round }).map((_, index) => (
     <TableRow key={index}>
       <TableCell>

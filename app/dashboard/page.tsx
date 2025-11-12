@@ -27,6 +27,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import SkeletonTableRow from "./invitation-code/SkeletonTableRow";
+import { StatsCard } from "@/components/stats-card";
 
 export default function DashboardHome() {
   const [submissions, setSubmissions] = useState<any[]>([]);
@@ -88,48 +89,21 @@ export default function DashboardHome() {
 
       {/* Stats Cards */}
       <div className="grid md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Submissions
-            </CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <NumberTicker
-              className="text-2xl font-bold text-white"
-              value={totalCount?.totalSubmissions || 100}
-            />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Requests
-            </CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <NumberTicker
-              className="text-2xl font-bold text-white"
-              value={totalCount?.totalRequests || 100}
-            />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Payments
-            </CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <NumberTicker
-              className="text-2xl font-bold text-white"
-              value={totalCount?.totalPayments || 100}
-            />
-          </CardContent>
-        </Card>
+        <StatsCard
+          title="Total Submissions"
+          value={totalCount?.totalSubmissions}
+          icon={<FileText className="h-4 w-4 text-muted-foreground" />}
+        />
+        <StatsCard
+          title="Total Submissions"
+          value={totalCount?.totalRequests}
+          icon={<FileText className="h-4 w-4 text-muted-foreground" />}
+        />
+        <StatsCard
+          title="Total Submissions"
+          value={totalCount?.totalPayments}
+          icon={<FileText className="h-4 w-4 text-muted-foreground" />}
+        />
       </div>
 
       {/* Chart Card */}
@@ -167,8 +141,8 @@ export default function DashboardHome() {
               <TableBody>
                 {submissions.length === 0 && <SkeletonTableRow round={6} />}
                 {submissions.length > 0 &&
-                  submissions?.map((submission) => (
-                    <TableRow key={submission.id}>
+                  submissions?.slice(0, 6)?.map((submission) => (
+                    <TableRow key={submission._id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <FileText className="w-5 h-5 text-yellow-500/70" />

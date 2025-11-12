@@ -2,7 +2,7 @@
 
 export default function About() {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen py-10 lg:py-20">
       <title>About | Cut to Black Prize</title>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <h1 className="text-5xl md:text-6xl font-bold text-accent mb-8">
