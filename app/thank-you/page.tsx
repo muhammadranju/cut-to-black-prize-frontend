@@ -1,12 +1,17 @@
+"use client";
+import { ConfettiFireworks } from "@/components/ConfettiFireworks";
+import { ConfettiSideCannons } from "@/components/ConfettiSideCannons";
 import ContentWrapper from "@/components/content-wrapper";
 import { Button } from "@/components/ui/button";
+import { Confetti, type ConfettiRef } from "@/components/ui/confetti";
 import { CheckCircle2, Mail } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
 
 const ThankYou: React.FC = () => {
+  const confettiRef = useRef<ConfettiRef>(null);
   return (
-    <ContentWrapper>
+    <div className="relative overflow-hidden pt-36 ">
       <title>Thank You | Cut to Black Prize</title>
       {/* Success Icon */}
       <div className="flex justify-center mb-8 mt-10">
@@ -19,7 +24,7 @@ const ThankYou: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 ">
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-yellow-500 mb-6">
           Thank You!
         </h1>
@@ -59,7 +64,9 @@ const ThankYou: React.FC = () => {
           </p>
         </div>
       </div>
-    </ContentWrapper>
+
+      <ConfettiFireworks />
+    </div>
   );
 };
 

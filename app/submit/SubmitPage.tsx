@@ -7,16 +7,26 @@ import { Label } from "@/components/ui/label";
 import { API_URL } from "@/lib/config";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Image from "next/image";
 
 export default function SubmitPage() {
   const [invitationCode, setInvitationCode] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const [errors, setErrors] = useState({
     invitationCode: "",
     terms: "",
@@ -66,9 +76,15 @@ export default function SubmitPage() {
       const { data } = await axios.get(
         `${API_URL}/invitation/${invitationCode.trim()}`
       );
-      console.log("API Response:", data); // Debug log for success case
 
-      if (data.success) {
+      if (!data.data.paymentVerified) {
+        toast.error("Payment not verified. Please pay first.");
+        setOpen(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (data.data.paymentVerified) {
         toast.success("Invitation code verified! Redirecting...");
         Cookies.set("__INVITE-CODE", invitationCode.trim());
         Cookies.set("__INVITE-CODE-VERIFIED", "true");
@@ -87,7 +103,7 @@ export default function SubmitPage() {
         setIsLoading(false);
         setInvitationCode("");
         setAgreedToTerms(false);
-        router.push("/upload-submission");
+        return router.push("/upload-submission");
       } else {
         // Handle non-success responses (e.g., custom error in data)
         toast.error(data.message || "Invalid invitation code");
@@ -345,6 +361,36 @@ export default function SubmitPage() {
           </p>
         </div>
       </div>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="bg-white ">
+          <DialogHeader className="flex items-center justify-between">
+            <Image
+              src="/cancel.gif"
+              alt="Success"
+              width={100}
+              height={100}
+              className=""
+            />
+            <DialogTitle className="text-3xl font-bold text-center text-[#F55276]">
+              You have not payment yet.
+            </DialogTitle>
+            <DialogDescription className="text-center font-semibold w-4/5 text-black/80">
+              Please pay the amount and try again to upload your screenplay.
+            </DialogDescription>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setOpen(false)}
+                className="bg-[#F55276] border-0 px-10 hover:bg-[#F55276]/80 hover:text-white transition-all"
+              >
+                <X className="w-4 h-4 -mr-2" /> Close
+              </Button>
+            </DialogTrigger>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </ContentWrapper>
   );
 }

@@ -249,9 +249,6 @@ export default function InvitationCodePage() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="bg-white">
           <DialogHeader className="flex items-center justify-between">
-            <DialogTitle className="text-xl w-4/6 font-bold text-center text-black">
-              Successfully Send Invitation Code
-            </DialogTitle>
             <Image
               src="/success.gif"
               alt="Success"
@@ -259,6 +256,9 @@ export default function InvitationCodePage() {
               height={100}
               className=""
             />
+            <DialogTitle className="text-2xl w-[80%] font-bold text-center text-black">
+              Successfully Send Invitation Code
+            </DialogTitle>
             <DialogDescription className="text-center w-4/5 text-black/80">
               We've sent your invitation code to your email address. Please
               check your inbox for the email.
