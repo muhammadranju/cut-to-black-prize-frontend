@@ -2,16 +2,6 @@
 import ContentWrapper from "@/components/content-wrapper";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { API_URL } from "@/lib/config";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { Loader2, X } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -20,7 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { API_URL } from "@/lib/config";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { Loader2, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function SubmitPage() {
   const [invitationCode, setInvitationCode] = useState("");

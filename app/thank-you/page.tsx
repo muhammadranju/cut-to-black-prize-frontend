@@ -1,9 +1,7 @@
 "use client";
 import { ConfettiFireworks } from "@/components/ConfettiFireworks";
-import { ConfettiSideCannons } from "@/components/ConfettiSideCannons";
-import ContentWrapper from "@/components/content-wrapper";
 import { Button } from "@/components/ui/button";
-import { Confetti, type ConfettiRef } from "@/components/ui/confetti";
+import { type ConfettiRef } from "@/components/ui/confetti";
 import { CheckCircle2, Mail } from "lucide-react";
 import Link from "next/link";
 import React, { useRef } from "react";
